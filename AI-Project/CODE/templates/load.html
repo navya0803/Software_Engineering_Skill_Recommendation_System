@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Resume</title>
+    <link href="static/img/cv.png" rel="icon">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link href="static/img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Handlee&family=Nunito&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Flaticon Font -->
+    <link href="static/lib/flaticon/font/flaticon.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="static/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="static/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="static/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navbar Start -->
+    <div class="container-fluid bg-light position-relative shadow">
+        <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0 px-lg-5">
+            <a href="" class="navbar-brand font-weight-bold text-secondary" style="font-size: 50px;">
+                <i class="bi bi-file-earmark-person"href="{{url_for('index')}}"></i>
+                <span class="text-primary">Ai Skill Recommendation</span>
+            </a>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                <div class="navbar-nav font-weight-bold mx-auto py-0">
+                    <a href="{{url_for('index')}}" class="nav-item nav-link active" style="margin-left: 433px;">Home</a>
+                    <a href="{{url_for('index')}}" class="nav-item nav-link">Log Out</a>
+                    <!-- <a href="class.html" class="nav-item nav-link">Classes</a>
+                    <a href="team.html" class="nav-item nav-link">Teachers</a>
+                    <a href="gallery.html" class="nav-item nav-link">Gallery</a> -->
+                    <!-- <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Log In</a>
+                        <div class="dropdown-menu rounded-0 m-0">
+                            <a href="{{url_for('signup')}}" class="dropdown-item">Register</a>
+                            <a href="{{url_for('login')}}"  class="dropdown-item">Log In</a>
+                        </div>
+                    </div> -->
+                    <!-- <a href="contact.html" class="nav-item nav-link">Contact</a> -->
+                </div>
+                <!-- <a href="{{url_for('signup')}}" class="btn btn-primary px-4">Let's Start</a> -->
+            </div>
+        </nav>
+    </div>
+    <!-- Navbar End -->
+
+
+    <!-- Header Start -->
+    <!-- <div class="container-fluid bg-primary mb-5">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 400px">
+            <div class="card-body rounded-bottom bg-primary p-5"> -->
+                <!-- <center>
+                    <h4 style="color: white">{{ msg4 }} </h4><br>
+                <h4 style="color: white">{{ msg5 }} </h4><br>
+                <h4 style="color: white">{{ m1 }} </h4><br>
+                
+
+                <h4 style="color: white">{{ msg2 }} </h4><br>
+                <h4 style="color: white">{{ msg3 }} </h4></center> -->
+                <!-- <form  action="{{url_for('load')}}" method="post" enctype="multipart/form-data">
+                    <center>                       
+                    </center>
+                    <div class="form-group">
+                        <input type="file"  name = "resume"class="form-control border-0 p-4" placeholder="Upload Your Resume" required="required" style="margin-top: 50px;"/>
+                    </div>
+                    <div class="form-group">
+                        <input type="file" name = "job_description"class="form-control border-0 p-4" placeholder="Upload the Job Description" required="required" />
+                    </div>
+                    
+                    <div>
+                        <button class="btn btn-secondary btn-block border-0 py-3" type="submit">Submit</button>
+                    </div>
+                </form> -->
+            
+        <!-- </div>
+    </div> -->
+    <body>
+        <h1>Upload Your Resume</h1>
+        <form action="{{url_for('load')}}" method="POST" enctype="multipart/form-data">
+            <label for="resume">Upload Your Resume:</label>
+            <input type="file" name="resume" id="resume" required>
+            <br>
+            <label for="job_position">Select Target Job Position:</label>
+            <select name="job_position" id="job_position" required>
+                <!-- Add job positions dynamically -->
+                {% for position in job_positions %}
+                    <option value="{{ position }}">{{ position }}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <input type="submit" value="Submit">
+        </form>
+    
+        <!-- Display the results here -->
+        {% if user_skills %}
+            <h2>Your Skills:</h2>
+            <ul>
+                {% for skill in user_skills %}
+                    <li>{{ skill }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    
+        {% if target_job_skills %}
+            <h2>Required Skills for {{ selected_job_position }}:</h2>
+            <ul>
+                {% for skill in target_job_skills %}
+                    <li>{{ skill }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    
+        {% if missing_skills %}
+            <h2>Missing Skills for {{ selected_job_position }}:</h2>
+            <ul>
+                {% for skill in missing_skills %}
+                    <li>{{ skill }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        
+        <!-- Center the file links section -->
+        <div style="text-align: center;">
+            {% if file_names != None %}
+            <main class="row">
+                {% for name in file_names %}
+                <div class="col-2">
+                    <div class="card border-primary">
+                        <a href="/static/resumes/{{name}}" class="btn btn-primary">{{name}}</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </main>
+            {% endif %}
+        </div>
+    </body>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    <!-- Footer Start -->
+    <div class="container-fluid bg-secondary text-white mt-5 py-5 px-sm-3 px-md-5">
+        <div class="row pt-5">
+            <div class="col-lg-3 col-md-6 mb-5">
+                <a href="" class="navbar-brand font-weight-bold text-primary m-0 mb-4 p-0" style="font-size: 40px; line-height: 40px;">
+                    <!-- <i class="flaticon-043-teddy-bear"></i> -->
+                    <span class="text-white">Resume</span>
+                </a>
+                <p  align="justify">Resume parsing refers to the automated storage, organization and analysis of job resumes. Resume parsing software provides companies an efficient way to identify keywords, skills, and so forth, in order to sort through large quantities of applications to identify the best applicants.</p>
+                <div class="d-flex justify-content-start mt-4">
+                    <a class="btn btn-outline-primary rounded-circle text-center mr-2 px-0"
+                        style="width: 38px; height: 38px;" href="#"><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-outline-primary rounded-circle text-center mr-2 px-0"
+                        style="width: 38px; height: 38px;" href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-outline-primary rounded-circle text-center mr-2 px-0"
+                        style="width: 38px; height: 38px;" href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a class="btn btn-outline-primary rounded-circle text-center mr-2 px-0"
+                        style="width: 38px; height: 38px;" href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-5">
+                <h3 class="text-primary mb-4">Get In Touch</h3>
+                <div class="d-flex">
+                    <h4 class="fa fa-map-marker-alt text-primary"></h4>
+                    <div class="pl-3">
+                        <h5 class="text-white">Address</h5>
+                        <p>123 Street, New York, USA</p>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <h4 class="fa fa-envelope text-primary"></h4>
+                    <div class="pl-3">
+                        <h5 class="text-white">Email</h5>
+                        <p>info@example.com</p>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <h4 class="fa fa-phone-alt text-primary"></h4>
+                    <div class="pl-3">
+                        <h5 class="text-white">Phone</h5>
+                        <p>+012 345 67890</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-5">
+                <h3 class="text-primary mb-4">Quick Links</h3>
+                <div class="d-flex flex-column justify-content-start">
+                    <a class="text-white mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
+                    <a class="text-white mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>About Us</a>
+                    <a class="text-white mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Classes</a>
+                    <a class="text-white mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Teachers</a>
+                    <a class="text-white mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Blog</a>
+                    <a class="text-white" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-5">
+                <h3 class="text-primary mb-4">Newsletter</h3>
+                <form action="">
+                    <div class="form-group">
+                        <input type="text" class="form-control border-0 py-4" placeholder="Your Name" required="required" />
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control border-0 py-4" placeholder="Your Email"
+                            required="required" />
+                    </div>
+                    <div>
+                        <button class="btn btn-primary btn-block border-0 py-3" type="submit">Submit Now</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="container-fluid pt-5" style="border-top: 1px solid rgba(23, 162, 184, .2);;">
+            <p class="m-0 text-center text-white">
+                &copy; <a class="text-primary font-weight-bold" href="#">Your Site Name</a>. All Rights Reserved. Designed
+                by
+                <a class="text-primary font-weight-bold" href="https://htmlcodex.com">HTML Codex</a>
+            </p>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary p-3 back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="static/lib/easing/easing.min.js"></script>
+    <script src="static/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="static/lib/isotope/isotope.pkgd.min.js"></script>
+    <script src="static/lib/lightbox/js/lightbox.min.js"></script>
+
+    <!-- Contact Javascript File -->
+    <script src="static/mail/jqBootstrapValidation.min.js"></script>
+    <script src="static/mail/contact.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="static/js/main.js"></script>
+</body>
+
+</html>
